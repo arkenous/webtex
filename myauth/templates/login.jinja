@@ -1,10 +1,9 @@
 {% extends "base.jinja" %}
 
 {% block header %}
-  {% if user is defined %}
-    {% if user.is_authenticated %}
-      <meta http-equiv="refresh" content="0;URL=/editor/"/>
-    {% endif %}
+  {% if request.user.is_authenticated %}
+    <!-- Redirect to root url if user is already logged in -->
+    <meta http-equiv="refresh" content="0;URL=/"/>
   {% endif %}
   <link rel="stylesheet" href="{{ static('css/login.css') }}">
 {% endblock %}
