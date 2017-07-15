@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'editor',
+    'ldap',
+    'myauth'
 ]
 
 MIDDLEWARE = [
@@ -56,7 +59,9 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates')
+            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'editor/templates'),
+            os.path.join(BASE_DIR, 'myauth/templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -118,3 +123,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'ldap.backend.LDAPBackend',
+)
+
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
+
+LDAP_SERVER_ADDRESS = local_settings.LDAP_SERVER_ADDRESS
+LDAP_SERVER_PORT = local_settings.LDAP_SERVER_PORT
+LDAP_USER_BASEDN = local_settings.LDAP_USER_BASEDN

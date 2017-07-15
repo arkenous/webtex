@@ -1,0 +1,9 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+  <p>Current User:{{ user.username }}</p>
+
+  <div>
+    <a href="/logout">Logout</a>
+  </div>
+{% endblock %}

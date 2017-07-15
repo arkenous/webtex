@@ -1,0 +1,39 @@
+{% extends "base.jinja" %}
+
+{% block header %}
+  {% if user is defined %}
+    {% if user.is_authenticated %}
+      <meta http-equiv="refresh" content="0;URL=/editor/"/>
+    {% endif %}
+  {% endif %}
+  <link rel="stylesheet" href="{{ static('css/login.css') }}">
+{% endblock %}
+
+{% block content %}
+  {% if form.errors %}
+    <script type="text/javascript">
+      Materialize.toast("Your username and/or password didn't match.", 4000, 'error')
+    </script>
+  {% endif %}
+
+  <div class="container">
+    <div class="row" id="login">
+      <form class="col s12" method="post" action="{{ url('login') }}">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
+        <div class="row">
+          <div class="input-field col s12">
+            <input class="validate" placeholder="Username" id="id_username" name="username" type="text" autofocus required   maxlength="254">
+            <label for="id_username">Username</label>
+          </div>
+          <div class="input-field col s12">
+            <input class="validate" placeholder="Password" id="id_password" name="password" type="password" required>
+            <label for="id_password">Password</label>
+          </div>
+        </div>
+
+        <button class="btn waves-effect waves-light right" type="submit" name="login" value="login">Submit <i   class="material-icons right">send</i> </button>
+        <input type="hidden" name="next" value="{{ next }}"/>
+      </form>
+    </div>
+  </div>
+{% endblock %}

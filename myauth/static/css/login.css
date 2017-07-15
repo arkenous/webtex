@@ -1,0 +1,17 @@
+html, body, .container {
+    margin:0;
+    height:100%;
+    width:100%;
+}
+
+#login {
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    margin:auto;
+    padding-left:20%;
+    padding-right:20%;
+    height:50%;
+}
