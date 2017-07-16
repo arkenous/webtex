@@ -1,9 +1,31 @@
 {% extends "base.jinja" %}
 
 {% block content %}
-  <p>Current User:{{ user.username }}</p>
+  <nav class="hide-on-small-only cyan lighten-1">
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo left">WebTeX</a>
+      <ul id="nav-mobile" class="right">
+        <li><a href="#" class="waves-effect waves-light"><i class="material-icons">view_list</i></a></li>
+        <li><a href="#" class="waves-effect waves-light"><i class="material-icons">play_for_work</i></a></li>
+        <li><a href="#" id="current">Current</a> </li>
+        <li><a href="#" class="waves-effect waves-light"><i class="material-icons">settings</i></a></li>
+      </ul>
+    </div>
+  </nav>
+  <nav class="hide-on-med-and-up cyan lighten-1">
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo left">WebTeX</a>
+      <ul id="nav-mobile" class="right">
+        <li><a href="#" class="waves-effect waves-light"><i class="material-icons">view_list</i></a></li>
+        <li><a href="#" id="current">Current</a> </li>
+        <li><a href="#" class="waves-effect waves-light"><i class="material-icons">settings</i></a></li>
+      </ul>
+    </div>
+  </nav>
+
 
   <div>
     <a href="/logout">Logout</a>
   </div>
+
 {% endblock %}
