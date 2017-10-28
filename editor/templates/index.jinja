@@ -17,7 +17,7 @@
       <a href="#" class="brand-logo left">WebTeX</a>
       <ul id="nav-mobile" class="right">
         <li><a href="#directory_list_fixed_footer_modal" class="waves-effect waves-light modal-trigger"><i class="material-icons">view_list</i></a></li>
-        <li><a href="#" class="waves-effect waves-light"><i class="material-icons">play_for_work</i></a></li>
+        <li><a href="#" class="waves-effect waves-light compile"><i class="material-icons">play_for_work</i></a></li>
         <li><a href="#" id="current">Current</a> </li>
         <li><a href="#" class="waves-effect waves-light"><i class="material-icons">settings</i></a></li>
       </ul>
@@ -107,7 +107,7 @@
     </div>
   </div>
   <div class="fixed-action-btn hide-on-med-and-up">
-    <a class="btn btn-floating waves-effect waves-light red">
+    <a class="btn btn-floating waves-effect waves-light red compile">
       <i class="material-icons">play_for_work</i>
     </a>
   </div>
@@ -164,6 +164,33 @@
     editor_s.getSession().setTabSize(2);
     editor_s.getSession().setUseSoftTabs(true);
     editor_s.setShowInvisibles(true);
+  </script>
+  <script type="text/javascript" src="{{ static('js/csrf_token_ajax.js') }}"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.compile').click(function () {
+        var content = "";
+        if ($("#editor-l").is(":visible")) content = editor_l.getValue();
+        else content = editor_s.getValue();
+        console.log("content: " + content);
+
+        $.ajax({
+          url: 'compile/',
+          type: 'POST',
+          data: {
+            'content':content
+          },
+          dataType: 'json',
+          success: function (data, status, xhr) {
+            console.log('success');
+          },
+          error: function (xhr, status, thrown) {
+            console.log('error');
+          }
+        });
+        return false;
+      });
+    });
   </script>
 
 {% endblock %}
