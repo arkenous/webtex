@@ -1,11 +1,22 @@
 {% extends "base.jinja" %}
 
+{% block header %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js" type="text/javascript" charset="utf-8"></script>
+  <style>
+    html {height:100%;}
+    body {height:100%;}
+    .tabs-content {height: 100% !important;}
+    .carousel {height: 100% !important;}
+    .carousel-item {height: 100% !important;}
+  </style>
+{% endblock %}
+
 {% block content %}
   <nav class="hide-on-small-only cyan lighten-1">
     <div class="nav-wrapper">
       <a href="#" class="brand-logo left">WebTeX</a>
       <ul id="nav-mobile" class="right">
-        <li><a href="#" class="waves-effect waves-light"><i class="material-icons">view_list</i></a></li>
+        <li><a href="#directory_list_fixed_footer_modal" class="waves-effect waves-light modal-trigger"><i class="material-icons">view_list</i></a></li>
         <li><a href="#" class="waves-effect waves-light"><i class="material-icons">play_for_work</i></a></li>
         <li><a href="#" id="current">Current</a> </li>
         <li><a href="#" class="waves-effect waves-light"><i class="material-icons">settings</i></a></li>
@@ -16,24 +27,25 @@
     <div class="nav-wrapper">
       <a href="#" class="brand-logo left">WebTeX</a>
       <ul id="nav-mobile" class="right">
-        <li><a href="#" class="waves-effect waves-light"><i class="material-icons">view_list</i></a></li>
+        <li><a href="#directory_list_fixed_footer_modal" class="waves-effect waves-light"><i class="material-icons">view_list</i></a></li>
         <li><a href="#" id="current">Current</a> </li>
         <li><a href="#" class="waves-effect waves-light"><i class="material-icons">settings</i></a></li>
       </ul>
     </div>
   </nav>
 
-  <div class="container-fluid">
-    <div class="row">
-      <p>Current User:{{ user.username }}</p>
-    </div>
-
+  <div class="container-fluid" style="padding-top: 0.75rem; height: 90vh;">
     <div class="row hide-on-med-and-down">
       <div class="col l6">
-        <p class="center">EDITOR</p>
+        <div id="editor-l" style="height: 70vh;">function foo(items) {
+          var x = "All this is syntax highlighted";
+          return x;
+        }</div>
       </div>
       <div class="col l6">
-        <p class="center">PDF PREVIEW</p>
+        <div id="preview" style="height: 70vh;">
+          <p class="center">PDF PREVIEW</p>
+        </div>
       </div>
     </div>
     <div class="row hide-on-med-and-down">
@@ -55,60 +67,103 @@
       </div>
     </div>
 
-    <div class="row hide-on-large-only">
-      <div class="col s12 m12">
-        <ul class="tabs">
-          <li class="tab col s6 m6"><a href="#editor-tab">Editor</a></li>
-          <li class="tab col s6 m6"><a href="#preview-tab">Preview</a></li>
-        </ul>
-        <div id="editor-tab" class="col s12 m12 blue">
-          <div class="row">
-            <div class="col s12 m12">
-              <p class="center">EDITOR</p>
+    <div class="row hide-on-large-only" style="height: 100%; margin-bottom: 0 !important;">
+      <div class="col s12 m12" style="height: 100%;">
+        <div class="row" style="height: 100%; margin-bottom: 0 !important; padding-bottom: 50px">
+          <ul class="tabs">
+            <li class="tab col s6 m6"><a href="#editor-tab">Editor</a></li>
+            <li class="tab col s6 m6"><a href="#preview-tab">Preview</a></li>
+          </ul>
+          <div id="editor-tab" class="col s12 m12 blue" style="height: 100%; padding-bottom: 50px;">
+            <div class="row" style="height: 100%; margin-bottom: 0 !important;">
+              <div class="col s12 m12" style="height: 100%;">
+                <div id="editor-s" style="height: 100%;">function foo(items) {
+                  var x = "All this is syntax highlighted";
+                  return x;
+                  }</div>
+              </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col s12 m12">
-              <ul class="collapsible center" data-collapsible="expandable">
-                <li>
-                  <div class="collapsible-header waves-effect waves-teal">LaTeX</div>
-                  <div class="collapsible-body"><span></span></div>
-                </li>
-              </ul>
+          <div id="preview-tab" class="col s12 m12 red" style="height: 100%;">
+            <div class="row" style="height: 100%; margin-bottom: 0 !important;">
+              <div class="col s12 m12" style="height: 100%;">
+                <div id="preview" style="height: 100%;">
+                  <p class="center">PREVIEW</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <div id="preview-tab" class="col s12 m12 red">
-          <div class="row">
-            <div class="col s12 m12">
-              <p class="center">PREVIEW</p>
-            </div>
+        <div class="row" style="position: fixed; bottom: 0;left: 0; right: 0;width: 100%;height: 40px;margin-bottom: 0 !important;">
+          <div class="col s6 m6">
+            <a class="waves-effect waves-light btn teal modal-trigger" href="#log_bottom_sheet_modal" style="width: 100%;">LaTeX</a>
           </div>
-          <div class="row">
-            <div class="col s12 m12">
-              <ul class="collapsible center" data-collapsible="expandable">
-                <li>
-                  <div class="collapsible-header waves-effect waves-red">RedPen</div>
-                  <div class="collapsible-body"><span></span></div>
-                </li>
-              </ul>
-            </div>
+          <div class="col s6 m6">
+            <a class="waves-effect waves-light btn red modal-trigger" href="#log_bottom_sheet_modal" style="width: 100%;">RedPen</a>
           </div>
         </div>
       </div>
       <script type="text/javascript">$(document).ready(function() {$('ul.tabs').tabs({'swipeable': true});})</script>
     </div>
   </div>
-
-  <div>
-    <a href="/logout">Logout</a>
-  </div>
-
   <div class="fixed-action-btn hide-on-med-and-up">
     <a class="btn btn-floating waves-effect waves-light red">
       <i class="material-icons">play_for_work</i>
     </a>
   </div>
+
+  <!-- Bottom sheet modal to show latex/redpen logs -->
+  <div id="log_bottom_sheet_modal" class="modal bottom-sheet">
+    <div class="modal-content">
+      <h4 id="log_bottom_sheet_modal_title">Modal Header</h4>
+      <p id="log_bottom_sheet_modal_content">Log text...</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
+    </div>
+  </div>
+  <script type="text/javascript">$(document).ready(function() {$('.modal').modal();})</script>
+
+  <!-- Directory list -->
+  <div id="directory_list_fixed_footer_modal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <h4>Directory list</h4>
+      <form>
+        <p>
+          <input type="checkbox" class="checkbox_directory_list_item" id="directory_list_item_1"/>
+          <label for="directory_list_item_1">Sample1</label>
+        </p>
+        <p>
+          <input type="checkbox" class="checkbox_directory_list_item" id="directory_list_item_2"/>
+          <label for="directory_list_item_2">Sample2</label>
+        </p>
+        <p>
+          <input type="checkbox" class="checkbox_directory_list_item" id="directory_list_item_3"/>
+          <label for="directory_list_item_3">Sample3</label>
+        </p>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat">Cancel</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Delete</a>
+    </div>
+  </div>
+  <script type="text/javascript">$(document).ready(function() {$('.modal').modal();})</script>
+
+  <script type="text/javascript">
+    var editor_l = ace.edit("editor-l");
+    editor_l.setTheme("ace/theme/github");
+    editor_l.getSession().setMode("ace/mode/javascript");
+    editor_l.getSession().setTabSize(2);
+    editor_l.getSession().setUseSoftTabs(true);
+    editor_l.setShowInvisibles(true);
+
+    var editor_s = ace.edit("editor-s");
+    editor_s.setTheme("ace/theme/github");
+    editor_s.getSession().setMode("ace/mode/javascript");
+    editor_s.getSession().setTabSize(2);
+    editor_s.getSession().setUseSoftTabs(true);
+    editor_s.setShowInvisibles(true);
+  </script>
 
 {% endblock %}
