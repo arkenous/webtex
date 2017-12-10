@@ -192,6 +192,7 @@
     $(document).ready(function() {
       readFileList();
       $('.compile').click(compile);
+      $('#upload_file').click(uploadFile);
     });
 
     function readFileList() {
@@ -218,6 +219,32 @@
       });
       return false;
     }
+
+    function uploadFile() {
+      var formData = new FormData($("#upload_file_form")[0]);
+
+      // processData と contentType の false は、form のファイルを POST する際には必要みたい
+      $.ajax({
+        method: 'POST',
+        url: 'upload_file',
+        processData: false,
+        contentType: false,
+        cache: false,
+        data: formData,
+        success: function(data, status, xhr) {
+          var result = JSON.parse(data.ResultSet).result;
+          if (result === "Success") {
+            console.log("Success");
+            readFileList();
+          }
+        },
+        error: function(xhr, status, thrown) {
+          console.log("error");
+        }
+      });
+      return false;
+    }
+
     function compile() {
       var content = "";
       if ($("#editor-l").is(":visible")) content = editor_l.getValue();
