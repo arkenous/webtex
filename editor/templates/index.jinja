@@ -135,6 +135,19 @@
   <div id="file_list_fixed_footer_modal" class="modal modal-fixed-footer">
     <div class="modal-content">
       <h4>File list</h4>
+      <!-- Upload file -->
+      <form id="upload_file_form" method="POST" enctype="multipart/form-data">
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>Upload File</span>
+            <input type="file">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+      </form>
+      <!-- File list -->
       <form>
         <p>
           <input type="checkbox" class="checkbox_file_list_item" id="file_list_item_1"/>
@@ -151,10 +164,12 @@
       </form>
     </div>
     <div class="modal-footer">
+      <a id="upload_file" href="#!" class="modal-action modal-close waves-effect waves-light btn-flat">Upload</a>
       <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat">Cancel</a>
-      <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Delete</a>
+      <a id="delete_file" href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Delete</a>
     </div>
   </div>
+
   <script type="text/javascript">$(document).ready(function() {$('.modal').modal();})</script>
 
   <script type="text/javascript">
