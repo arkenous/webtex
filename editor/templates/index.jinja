@@ -37,14 +37,13 @@
   <div class="container-fluid" style="padding-top: 0.75rem; height: 90vh;">
     <div class="row hide-on-med-and-down">
       <div class="col l6">
-        <div id="editor-l" style="height: 70vh;">function foo(items) {
+        <div id="editor-l" class="editor" style="height: 70vh;">function foo(items) {
           var x = "All this is syntax highlighted";
           return x;
         }</div>
       </div>
       <div class="col l6">
-        <div id="preview" style="height: 70vh;">
-          <p class="center">PDF PREVIEW</p>
+        <div class="preview" style="height: 70vh;">
         </div>
       </div>
     </div>
@@ -53,7 +52,7 @@
         <ul class="collapsible center" data-collapsible="expandable">
           <li>
             <div class="collapsible-header waves-effect waves-teal">LaTeX</div>
-            <div class="collapsible-body"><span></span></div>
+            <div class="collapsible-body latex-log-body"><span>testtesttest</span></div>
           </li>
         </ul>
       </div>
@@ -61,7 +60,7 @@
         <ul class="collapsible center" data-collapsible="expandable">
           <li>
             <div class="collapsible-header waves-effect waves-red">RedPen</div>
-            <div class="collapsible-body"><span></span></div>
+            <div class="collapsible-body redpen-log-body"><span>testtesttest</span></div>
           </li>
         </ul>
       </div>
@@ -77,7 +76,7 @@
           <div id="editor-tab" class="col s12 m12 blue" style="height: 100%; padding-bottom: 50px;">
             <div class="row" style="height: 100%; margin-bottom: 0 !important;">
               <div class="col s12 m12" style="height: 100%;">
-                <div id="editor-s" style="height: 100%;">function foo(items) {
+                <div id="editor-s" class="editor" style="height: 100%;">function foo(items) {
                   var x = "All this is syntax highlighted";
                   return x;
                   }</div>
@@ -87,8 +86,7 @@
           <div id="preview-tab" class="col s12 m12 red" style="height: 100%;">
             <div class="row" style="height: 100%; margin-bottom: 0 !important;">
               <div class="col s12 m12" style="height: 100%;">
-                <div id="preview" style="height: 100%;">
-                  <p class="center">PREVIEW</p>
+                <div class="preview" style="height: 100%;">
                 </div>
               </div>
             </div>
