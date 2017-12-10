@@ -148,7 +148,7 @@
         </div>
       </form>
       <!-- File list -->
-      <form>
+      <form id="file_list_form">
         <p>
           <input type="checkbox" class="checkbox_file_list_item" id="file_list_item_1"/>
           <label for="file_list_item_1">Sample1</label>
@@ -190,9 +190,34 @@
   <script type="text/javascript" src="{{ static('js/csrf_token_ajax.js') }}"></script>
   <script type="text/javascript">
     $(document).ready(function() {
+      readFileList();
       $('.compile').click(compile);
     });
 
+    function readFileList() {
+      $.ajax({
+        type: 'POST',
+        url: 'read_file_list',
+        success: function (data, status, xhr) {
+          $("#file_list_form").empty();
+          var result = JSON.parse(data.ResultSet).result;
+          if (result === "Success") {
+            var fileList = JSON.parse(data.ResultSet).list;
+            for (var i = 0; i < fileList.length; ++i) {
+              $("#file_list_form").append(
+                  "<p><input type='checkbox' class='checkbox_file_list_item' id='file_list_item_'" + i + "/><label for='file_list_item_'" + i + ">" + fileList[i] + "</label></p>"
+              );
+            }
+
+            //TODO: ファイルのダウンロード機能を実装する
+          }
+        },
+        error: function(xhr, status, thrown) {
+          console.log('error');
+        }
+      });
+      return false;
+    }
     function compile() {
       var content = "";
       if ($("#editor-l").is(":visible")) content = editor_l.getValue();
@@ -244,7 +269,8 @@
                   "<object id='pdf' data='"+pdfPath+"?"+timestamp+"' type='application/pdf' width='50vw' height='70vh'></object>"
               );
             }
-            //TODO: ファイルリストを更新する
+            // ファイルリストを更新する
+            readFileList();
           }
         },
         error: function (xhr, status, thrown) {
