@@ -197,14 +197,53 @@
         console.log("content: " + content);
 
         $.ajax({
-          url: 'compile/',
           type: 'POST',
+          url: 'compile/',
           data: {
             'content':content
           },
+          contentType: 'application/json',
           dataType: 'json',
           success: function (data, status, xhr) {
             console.log('success');
+            var result = JSON.parse(data.ResultSet).result;
+            if (result === "Success") {
+              var latexLog = JSON.parse(data.ResultSet).latexLog;
+
+              // LaTeX collapsible body と latex_log_bottom_sheet_modal_content に LaTeX ログを挿入
+              $(".latex-log-body").empty();
+              for (var i = 0; i < latexLog.length; ++i) {
+                $(".latex-log-body").append(latexLog[i] + "<br/>");
+              }
+
+              //PDF が存在していれば、RedPen ログ、PDF ファイルを挿入
+              var existPdf = JSON.parse(data.ResultSet).existPdf;
+              if (existPdf === " True") {
+                // RedPen ログを挿入
+                var redpenOut = JSON.parse(data.ResultSet).redpenOut;
+                var redpenErr = JSON.parse(data.ResultSet).redpenErr;
+
+                // RedPen collapsible body と redpen_log_bottom_sheet_modal_content に RedPen ログを挿入
+                $(".redpen-log-body").empty();
+                for (var i = 0; i < redpenout.length; ++i) {
+                  $(".redpen-log-body").append(redpenout[i] + "<br/>");
+                }
+
+                // PDF パス
+                var user = JSON.parse(data.ResultSet).user;
+                var pdfPath = "../../storage/" + user + "/document.pdf";
+
+                // コンパイルするたびに最新のものを表示させたいので、PDF パスの後ろに ? から始まるユニーク文字列を付与する
+                // これをしないと、キャッシュのせいか PDF ファイル表示が更新されない
+                var timestamp = new Date().getTime();
+                // PDF プレビュー要素下に object タグで PDF を入れる
+                $(".preview").empty();
+                $(".preview").append(
+                    "<object id='pdf' data='"+pdfPath+"?"+timestamp+"' type='application/pdf' width='50vw' height='70vh'></object>"
+                );
+              }
+              //TODO: ファイルリストを更新する
+            }
           },
           error: function (xhr, status, thrown) {
             console.log('error');
