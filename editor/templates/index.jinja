@@ -94,10 +94,10 @@
         </div>
         <div class="row" style="position: fixed; bottom: 0;left: 0; right: 0;width: 100%;height: 40px;margin-bottom: 0 !important;">
           <div class="col s6 m6">
-            <a class="waves-effect waves-light btn teal modal-trigger" href="#log_bottom_sheet_modal" style="width: 100%;">LaTeX</a>
+            <a class="waves-effect waves-light btn teal modal-trigger" href="#latex_log_bottom_sheet_modal" style="width: 100%;">LaTeX</a>
           </div>
           <div class="col s6 m6">
-            <a class="waves-effect waves-light btn red modal-trigger" href="#log_bottom_sheet_modal" style="width: 100%;">RedPen</a>
+            <a class="waves-effect waves-light btn red modal-trigger" href="#redpen_log_bottom_sheet_modal" style="width: 100%;">RedPen</a>
           </div>
         </div>
       </div>
@@ -111,10 +111,19 @@
   </div>
 
   <!-- Bottom sheet modal to show latex/redpen logs -->
-  <div id="log_bottom_sheet_modal" class="modal bottom-sheet">
+  <div id="latex_log_bottom_sheet_modal" class="modal bottom-sheet">
     <div class="modal-content">
-      <h4 id="log_bottom_sheet_modal_title">Modal Header</h4>
-      <p id="log_bottom_sheet_modal_content">Log text...</p>
+      <h4 id="latex_log_bottom_sheet_modal_title">LaTeX Log</h4>
+      <p id="latex_log_bottom_sheet_modal_content" class="latex-log-body">LaTeX Log text...</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
+    </div>
+  </div>
+  <div id="redpen_log_bottom_sheet_modal" class="modal bottom-sheet">
+    <div class="modal-content">
+      <h4 id="redpen_log_bottom_sheet_modal_title">RedPen Log</h4>
+      <p id="redpen_log_bottom_sheet_modal_content" class="redpen-log-body">RedPen Log text...</p>
     </div>
     <div class="modal-footer">
       <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
