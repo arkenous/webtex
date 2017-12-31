@@ -193,17 +193,18 @@
       readFileList();
       $('.compile').click(compile);
       $('#upload_file').click(uploadFile);
+      $('#delete_file').click(deleteFiles);
     });
 
     function readFileList() {
       $.ajax({
         type: 'POST',
-        url: 'read_file_list',
+        url: 'read_file_list/',
+        dataType: 'json',
         success: function (data, status, xhr) {
           $("#file_list_form").empty();
-          var result = JSON.parse(data.ResultSet).result;
-          if (result === "Success") {
-            var fileList = JSON.parse(data.ResultSet).list;
+          if (data['result'] === "Success") {
+            var fileList = data['list'];
             for (var i = 0; i < fileList.length; ++i) {
               $("#file_list_form").append(
                   "<p><input type='checkbox' class='checkbox_file_list_item' id='file_list_item_'" + i + "/><label for='file_list_item_'" + i + ">" + fileList[i] + "</label></p>"
@@ -226,14 +227,14 @@
       // processData と contentType の false は、form のファイルを POST する際には必要みたい
       $.ajax({
         method: 'POST',
-        url: 'upload_file',
+        url: 'upload_file/',
         processData: false,
         contentType: false,
         cache: false,
         data: formData,
+        dataType: 'json',
         success: function(data, status, xhr) {
-          var result = JSON.parse(data.ResultSet).result;
-          if (result === "Success") {
+          if (data['result'] === "Success") {
             console.log("Success");
             readFileList();
           }
@@ -243,6 +244,10 @@
         }
       });
       return false;
+    }
+
+    function deleteFiles() {
+      //TODO: ファイル削除機能を実装する
     }
 
     function compile() {
@@ -260,9 +265,8 @@
         dataType: 'json',
         success: function (data, status, xhr) {
           console.log('success');
-          var result = JSON.parse(data.ResultSet).result;
-          if (result === "Success") {
-            var latexLog = JSON.parse(data.ResultSet).latexLog;
+          if (data['result'] === "Success") {
+            var latexLog = data['latexLog'];
 
             // LaTeX collapsible body と latex_log_bottom_sheet_modal_content に LaTeX ログを挿入
             $(".latex-log-body").empty();
@@ -271,11 +275,11 @@
             }
 
             //PDF が存在していれば、RedPen ログ、PDF ファイルを挿入
-            var existPdf = JSON.parse(data.ResultSet).existPdf;
-            if (existPdf === " True") {
+            var existPdf = data['existPdf'];
+            if (existPdf === "True") {
               // RedPen ログを挿入
-              var redpenOut = JSON.parse(data.ResultSet).redpenOut;
-              var redpenErr = JSON.parse(data.ResultSet).redpenErr;
+              var redpenOut = data['redpenOut'];
+              var redpenErr = data['redpenErr'];
 
               // RedPen collapsible body と redpen_log_bottom_sheet_modal_content に RedPen ログを挿入
               $(".redpen-log-body").empty();
@@ -284,8 +288,8 @@
               }
 
               // PDF パス
-              var user = JSON.parse(data.ResultSet).user;
-              var pdfPath = "../../storage/" + user + "/document.pdf";
+              var user = data['user_storage'];
+              var pdfPath = user + "document.pdf";
 
               // コンパイルするたびに最新のものを表示させたいので、PDF パスの後ろに ? から始まるユニーク文字列を付与する
               // これをしないと、キャッシュのせいか PDF ファイル表示が更新されない
