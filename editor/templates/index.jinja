@@ -174,18 +174,42 @@
 
   <script type="text/javascript">
     var editor_l = ace.edit("editor-l");
-    editor_l.setTheme("ace/theme/github");
-    editor_l.getSession().setMode("ace/mode/javascript");
+    editor_l.setTheme("ace/theme/monokai");
+    editor_l.getSession().setMode("ace/mode/latex");
     editor_l.getSession().setTabSize(2);
     editor_l.getSession().setUseSoftTabs(true);
     editor_l.setShowInvisibles(true);
+    editor_l.setShowPrintMargin(false);
+    editor_l.$blockScrolling = Infinity;
 
     var editor_s = ace.edit("editor-s");
-    editor_s.setTheme("ace/theme/github");
-    editor_s.getSession().setMode("ace/mode/javascript");
+    editor_s.setTheme("ace/theme/monokai");
+    editor_s.getSession().setMode("ace/mode/latex");
     editor_s.getSession().setTabSize(2);
     editor_s.getSession().setUseSoftTabs(true);
     editor_s.setShowInvisibles(true);
+    editor_s.setShowPrintMargin(false);
+    editor_s.$blockScrolling = Infinity;
+
+    // Sync editors when resizing window
+    $(document).ready(function($) {
+      var timer = false;
+      $(window).resize(function() {
+        if (timer !== false) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(function() {
+          if ($('#editor-l').is(':visible')) {
+            console.log("set editor-l value");
+            editor_l.setValue(editor_s.getValue(), -1);
+          } else {
+            console.log("set editor-s value");
+            editor_s.setValue(editor_l.getValue(), -1);
+          }
+        }, 200);
+      });
+    });
+
   </script>
   <script type="text/javascript" src="{{ static('js/csrf_token_ajax.js') }}"></script>
   <script type="text/javascript">
