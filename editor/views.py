@@ -2,10 +2,11 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
 from django.conf import settings
-from os import mkdir, listdir
+from os import mkdir, listdir, chdir
 from os.path import exists, isdir
+from subprocess import check_output
 
-storage = settings.BASE_DIR + '/storage/'
+storage = settings.BASE_DIR + '/editor/static/storage/'
 
 
 @login_required
@@ -37,9 +38,33 @@ def read_file_list(request):
 
 @login_required
 def compile_content(request):
+    data = {}
     if request.method == 'POST':
+        user_storage = storage + request.user.username + '/'
+        if not exists(user_storage) or not isdir(user_storage):
+            return JsonResponse({'result': 'Error', 'cause': 'user storage not available'})
+
+        data['result'] = 'Success'
         content = request.POST['content']
-        print('content: '+content)
-        return JsonResponse({'result': 'OK'})
+        chdir(user_storage)
+        f = open('document.tex', 'w')
+        f.write(content)
+        f.close()
+
+        data['latex'] = check_output(
+            ['platex', '-halt-on-error', '-interaction=nonstopmode',
+             '-file-line-error', '-no-shell-escape', 'document.tex']
+        ).decode('utf-8').splitlines() + check_output(['dvipdfmx', 'document.dvi']).decode('utf-8').splitlines()
+
+        if exists('document.pdf'):
+            data['exist_pdf'] = 'True'
+            data['user'] = request.user.username
+            # TODO: Redpen添削機能を実装する
+            data['redpen_out'] = ""
+            data['redpen_err'] = ""
+        else:
+            data['exist_pdf'] = 'False'
+
+        return JsonResponse(data)
     else:
-        raise JsonResponse({'result': 'Error'})
+        return JsonResponse({'result': 'Error'})

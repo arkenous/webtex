@@ -290,7 +290,7 @@
         success: function (data, status, xhr) {
           console.log('success');
           if (data['result'] === "Success") {
-            var latexLog = data['latexLog'];
+            var latexLog = data['latex'];
 
             // LaTeX collapsible body と latex_log_bottom_sheet_modal_content に LaTeX ログを挿入
             $(".latex-log-body").empty();
@@ -299,21 +299,21 @@
             }
 
             //PDF が存在していれば、RedPen ログ、PDF ファイルを挿入
-            var existPdf = data['existPdf'];
+            var existPdf = data['exist_pdf'];
             if (existPdf === "True") {
               // RedPen ログを挿入
-              var redpenOut = data['redpenOut'];
-              var redpenErr = data['redpenErr'];
+              var redpenOut = data['redpen_out'];
+              var redpenErr = data['redpen_err'];
 
               // RedPen collapsible body と redpen_log_bottom_sheet_modal_content に RedPen ログを挿入
               $(".redpen-log-body").empty();
-              for (var i = 0; i < redpenout.length; ++i) {
-                $(".redpen-log-body").append(redpenout[i] + "<br/>");
+              for (var i = 0; i < redpenOut.length; ++i) {
+                $(".redpen-log-body").append(redpenOut[i] + "<br/>");
               }
 
               // PDF パス
-              var user = data['user_storage'];
-              var pdfPath = user + "document.pdf";
+              var user = data['user'];
+              var pdfPath = 'static/storage/' + user + "/document.pdf";
 
               // コンパイルするたびに最新のものを表示させたいので、PDF パスの後ろに ? から始まるユニーク文字列を付与する
               // これをしないと、キャッシュのせいか PDF ファイル表示が更新されない
@@ -321,7 +321,7 @@
               // PDF プレビュー要素下に object タグで PDF を入れる
               $(".preview").empty();
               $(".preview").append(
-                  "<object id='pdf' data='"+pdfPath+"?"+timestamp+"' type='application/pdf' width='50vw' height='70vh'></object>"
+                  "<object id='pdf' data='"+pdfPath+"?"+timestamp+"' type='application/pdf' width='100%' height='100%'></object>"
               );
             }
             // ファイルリストを更新する
