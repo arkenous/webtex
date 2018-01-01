@@ -42,7 +42,7 @@ def compile_content(request):
     if request.method == 'POST':
         user_storage = storage + request.user.username + '/'
         if not exists(user_storage) or not isdir(user_storage):
-            return JsonResponse({'result': 'Error', 'cause': 'user storage not available'})
+            return JsonResponse({'result': 'Error', 'cause': 'user storage is not available'})
 
         data['result'] = 'Success'
         content = request.POST['content']
