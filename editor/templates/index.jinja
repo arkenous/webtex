@@ -140,7 +140,7 @@
         <div class="file-field input-field">
           <div class="btn">
             <span>Upload File</span>
-            <input type="file">
+            <input type="file" name="file">
           </div>
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text">
@@ -259,8 +259,9 @@
         dataType: 'json',
         success: function(data, status, xhr) {
           if (data['result'] === "Success") {
-            console.log("Success");
             readFileList();
+            $("#upload_file_form")[0].reset();
+            Materialize.toast('Uploaded!', 5000);
           }
         },
         error: function(xhr, status, thrown) {

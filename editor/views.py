@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
 from django.conf import settings
 from os import mkdir, listdir, chdir
-from os.path import exists, isdir
+from os.path import exists, isdir, join
 from subprocess import check_output
 
 storage = settings.BASE_DIR + '/editor/static/storage/'
@@ -66,5 +66,25 @@ def compile_content(request):
             data['exist_pdf'] = 'False'
 
         return JsonResponse(data)
+    else:
+        return JsonResponse({'result': 'Error'})
+
+
+@login_required
+def upload_file(request):
+    if request.method == 'POST':
+        user_storage = storage + request.user.username + '/'
+        if not exists(user_storage) or not isdir(user_storage):
+            return JsonResponse({'result': 'Error', 'cause': 'user storage is not available'})
+
+        file = request.FILES['file']
+        if file:
+            dest = open(join(user_storage, file.name), 'wb+')
+            for chunk in file.chunks():
+                dest.write(chunk)
+            dest.close()
+            return JsonResponse({'result': 'Success'})
+        else:
+            return JsonResponse({'result': 'Error', 'cause': 'file is not valid'})
     else:
         return JsonResponse({'result': 'Error'})
