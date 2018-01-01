@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
 from django.conf import settings
-from os import mkdir, listdir, chdir
+from os import mkdir, listdir, chdir, remove
 from os.path import exists, isdir, join
 from subprocess import check_output
 
@@ -79,6 +79,7 @@ def upload_file(request):
 
         file = request.FILES['file']
         if file:
+            # TODO: ファイル名が不正でないかの確認を行う
             dest = open(join(user_storage, file.name), 'wb+')
             for chunk in file.chunks():
                 dest.write(chunk)
@@ -86,5 +87,22 @@ def upload_file(request):
             return JsonResponse({'result': 'Success'})
         else:
             return JsonResponse({'result': 'Error', 'cause': 'file is not valid'})
+    else:
+        return JsonResponse({'result': 'Error'})
+
+
+@login_required
+def delete_file(request):
+    if request.method == 'POST':
+        user_storage = storage + request.user.username + '/'
+        if not exists(user_storage) or not isdir(user_storage):
+            return JsonResponse({'result': 'Error', 'cause': 'user storage is not available'})
+
+        name = request.POST['name']
+        chdir(user_storage)
+        # TODO: ファイル名が不正でないかの確認を行う
+        remove(join(user_storage, name))
+
+        return JsonResponse({'result': 'Success'})
     else:
         return JsonResponse({'result': 'Error'})

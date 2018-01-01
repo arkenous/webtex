@@ -164,9 +164,9 @@
       </form>
     </div>
     <div class="modal-footer">
-      <a id="upload_file" href="#!" class="modal-action modal-close waves-effect waves-light btn-flat">Upload</a>
+      <a id="upload_file" href="#!" class="modal-action waves-effect waves-light btn-flat">Upload</a>
       <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat">Cancel</a>
-      <a id="delete_file" href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Delete</a>
+      <a id="delete_file" href="#!" class="modal-action waves-effect waves-red btn-flat">Delete</a>
     </div>
   </div>
 
@@ -231,7 +231,7 @@
             var fileList = data['list'];
             for (var i = 0; i < fileList.length; ++i) {
               $("#file_list_form").append(
-                  "<p><input type='checkbox' class='checkbox_file_list_item' id='file_list_item_'" + i + "/><label for='file_list_item_'" + i + ">" + fileList[i] + "</label></p>"
+                  "<p><input type='checkbox' class='checkbox_file_list_item' id='file_list_item_" + i + "' value='" + fileList[i] +"'/><label for='file_list_item_" + i + "'>" + fileList[i] + "</label></p>"
               );
             }
 
@@ -272,7 +272,28 @@
     }
 
     function deleteFiles() {
-      //TODO: ファイル削除機能を実装する
+      $('.checkbox_file_list_item:checked').each(function() {
+        console.log(this.value);
+
+        $.ajax({
+          type: 'POST',
+          url: 'delete_file/',
+          data: {
+            'name':this.value
+          },
+          dataType: 'json',
+          success: function(data, status, xhr) {
+            console.log('success');
+          },
+          error: function(xhr, status, thrown) {
+            console.log('error');
+          }
+        });
+      });
+
+      readFileList();
+
+      return false;
     }
 
     function compile() {
