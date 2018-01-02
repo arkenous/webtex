@@ -246,6 +246,11 @@
               );
             }
 
+            if (data['exist_tex'] === "True") {
+              editor_l.setValue(data['content'], -1);
+              editor_s.setValue(data['content'], -1);
+            }
+
             //TODO: ファイルのダウンロード機能を実装する
           }
         },

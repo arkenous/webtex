@@ -26,9 +26,15 @@ def read_file_list(request):
         user_storage = storage + request.user.username + '/'
         if exists(user_storage) and isdir(user_storage):
             data['list'] = listdir(user_storage)
+            if exists(user_storage + 'document.tex'):
+                data['exist_tex'] = 'True'
+                data['content'] = open(user_storage + 'document.tex').read()
+            else:
+                data['exist_tex'] = 'False'
         else:
             mkdir(user_storage)
             data['list'] = ''
+            data['exist_tex'] = 'False'
 
         data['result'] = 'Success'
         return JsonResponse(data)
