@@ -5,6 +5,8 @@ from django.conf import settings
 from os import mkdir, listdir, chdir, remove
 from os.path import exists, isdir, join
 from subprocess import check_output
+from json import loads
+from zipfile import ZipFile, ZIP_DEFLATED
 
 storage = settings.BASE_DIR + '/editor/static/storage/'
 
@@ -72,6 +74,24 @@ def compile_content(request):
             data['exist_pdf'] = 'False'
 
         return JsonResponse(data)
+    else:
+        return JsonResponse({'result': 'Error'})
+
+
+@login_required
+def download_files(request):
+    if request.method == 'POST':
+        user_storage = storage + request.user.username + '/'
+        if not exists(user_storage) or not isdir(user_storage):
+            return JsonResponse({'result': 'Error', 'cause': 'user storage is not available'})
+        requested_files = loads(request.POST['files'])
+        zipped = ZipFile(join(user_storage, "compressed.zip"), 'w', ZIP_DEFLATED)
+        for requested_file in requested_files:
+            zipped.write(join(user_storage, requested_file), requested_file)
+        zipped.close()
+        return JsonResponse({
+            'result': 'Success', 'user': request.user.username, 'name': 'compressed.zip'
+        })
     else:
         return JsonResponse({'result': 'Error'})
 

@@ -163,6 +163,7 @@
       </form>
     </div>
     <div class="modal-footer">
+      <a id="download_file" class="modal-action waves-effect waves-light btn-flat">Download</a>
       <a id="upload_file" href="#!" class="modal-action waves-effect waves-light btn-flat">Upload</a>
       <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat">Close</a>
       <a href="#delete_file_confirmation_modal" class="modal-action waves-effect waves-red btn-flat modal-trigger">Delete</a>
@@ -227,6 +228,7 @@
     $(document).ready(function() {
       readFileList();
       $('.compile').click(compile);
+      $('#download_file').click(downloadFiles);
       $('#upload_file').click(uploadFile);
       $('#delete_file').click(deleteFiles);
     });
@@ -258,6 +260,35 @@
           console.log('error');
         }
       });
+      return false;
+    }
+
+    function downloadFiles() {
+      var files = [];
+      $('.checkbox_file_list_item:checked').each(function() {
+        files.push(this.value);
+      });
+
+      if (files.length !== 0) {
+        $.ajax({
+          method: 'POST',
+          url: 'download_files/',
+          dataType: 'json',
+          data: {
+            'files': JSON.stringify(files)
+          },
+          success: function(data, status, xhr) {
+            if (data['result'] === 'Success') {
+              window.location = 'static/storage/' + data['user'] + '/' + data['name'];
+            }
+          },
+          error: function(xhr, status, thrown) {
+            console.log('Failure');
+            console.log('thrown: ' + thrown);
+          }
+        });
+      }
+
       return false;
     }
 
