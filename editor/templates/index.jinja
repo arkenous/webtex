@@ -129,7 +129,6 @@
       <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
     </div>
   </div>
-  <script type="text/javascript">$(document).ready(function() {$('.modal').modal();})</script>
 
   <!-- File list -->
   <div id="file_list_fixed_footer_modal" class="modal modal-fixed-footer">
@@ -165,8 +164,20 @@
     </div>
     <div class="modal-footer">
       <a id="upload_file" href="#!" class="modal-action waves-effect waves-light btn-flat">Upload</a>
-      <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat">Cancel</a>
-      <a id="delete_file" href="#!" class="modal-action waves-effect waves-red btn-flat">Delete</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat">Close</a>
+      <a href="#delete_file_confirmation_modal" class="modal-action waves-effect waves-red btn-flat modal-trigger">Delete</a>
+    </div>
+  </div>
+
+  <!-- Delete file confirmation modal -->
+  <div id="delete_file_confirmation_modal" class="modal">
+    <div class="modal-content">
+      <h4>Delete files</h4>
+      <p>Are you sure you want to delete selected files?</p>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-action modal-close waves-effect waves-light btn-flat">Cancel</a>
+      <a id="delete_file" class="modal-action modal-close waves-effect waves-red btn-flat">Delete</a>
     </div>
   </div>
 
@@ -273,8 +284,6 @@
 
     function deleteFiles() {
       $('.checkbox_file_list_item:checked').each(function() {
-        console.log(this.value);
-
         $.ajax({
           type: 'POST',
           url: 'delete_file/',
@@ -293,7 +302,7 @@
 
       readFileList();
 
-      return false;
+      return true;
     }
 
     function compile() {
